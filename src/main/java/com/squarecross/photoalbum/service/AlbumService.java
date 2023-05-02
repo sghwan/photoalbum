@@ -23,4 +23,9 @@ public class AlbumService {
         return albumRepository.findById(albumId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("앨범 아이디 %d로 조회 되지 않았습니다.", albumId)));
     }
+
+    public Album getAlbumByName(String albumName) {
+        return albumRepository.findByName(albumName)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("앨범명 %s으로 조회 되지 않았습니다.", albumName)));
+    }
 }

@@ -21,7 +21,7 @@ public class Album {
     private Long id;
 
     @Column(name = "album_name", unique = false, nullable = false)
-    private String albumName;
+    private String name;
 
     @CreationTimestamp
     @Column(name = "created_at", unique = false, nullable = true)
@@ -38,12 +38,12 @@ public class Album {
         this.id = id;
     }
 
-    public String getAlbumName() {
-        return albumName;
+    public String getName() {
+        return name;
     }
 
-    public void setAlbumName(String albumName) {
-        this.albumName = albumName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getCreatedAt() {
