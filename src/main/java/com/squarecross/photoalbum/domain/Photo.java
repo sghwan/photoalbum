@@ -10,7 +10,7 @@ import java.util.Date;
 @Table(name = "photo", schema = "photo_album", uniqueConstraints = {@UniqueConstraint(columnNames = "photo_id")})
 public class Photo {
 
-    protected Photo() {
+    public Photo() {
 
     }
 
