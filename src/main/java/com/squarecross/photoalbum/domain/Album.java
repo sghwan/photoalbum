@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "album", schema = "photo_album", uniqueConstraints = {@UniqueConstraint(columnNames = "album_id")})
 public class Album {
 
-    protected Album() {
+    public Album() {
 
     }
 
@@ -21,7 +21,7 @@ public class Album {
     private Long id;
 
     @Column(name = "album_name", unique = false, nullable = false)
-    private String name;
+    private String albumName;
 
     @CreationTimestamp
     @Column(name = "created_at", unique = false, nullable = true)
@@ -38,12 +38,12 @@ public class Album {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getAlbumName() {
+        return albumName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAlbumName(String albumName) {
+        this.albumName = albumName;
     }
 
     public Date getCreatedAt() {
