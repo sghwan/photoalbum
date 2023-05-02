@@ -1,5 +1,6 @@
 package com.squarecross.photoalbum.service;
 
+import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.domain.Photo;
 import com.squarecross.photoalbum.dto.AlbumDto;
@@ -12,6 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,5 +87,25 @@ class AlbumServiceTest {
         int result = photoRepository.countByAlbumId(savedAlbum.getId());
 
         assertThat(result).isEqualTo(2);
+    }
+
+    @Test
+    void createAlbum() throws IOException {
+        AlbumDto albumDto = new AlbumDto();
+        albumDto.setAlbumName("새폴더");
+        AlbumDto createdAlbumDto = albumService.createAlbum(albumDto);
+
+        File origin = new File(Constants.PATH_PREFIX + "\\photos\\original\\" + createdAlbumDto.getAlbumId());
+        File thumb = new File(Constants.PATH_PREFIX + "\\photos\\thumb\\" + createdAlbumDto.getAlbumId());
+
+        boolean mkdir1 = origin.mkdir();
+        boolean mkdir2 = thumb.mkdir();
+        assertThat(mkdir1).isFalse();
+        assertThat(mkdir2).isFalse();
+
+        boolean delete1 = origin.delete();
+        boolean delete2 = thumb.delete();
+        assertThat(delete1).isTrue();
+        assertThat(delete2).isTrue();
     }
 }

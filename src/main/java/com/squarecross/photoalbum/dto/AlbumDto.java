@@ -11,6 +11,10 @@ public class AlbumDto {
     private Date createdAt;
     private int count;
 
+    public AlbumDto() {
+
+    }
+
     public AlbumDto(Album album) {
         albumId = album.getId();
         albumName = album.getName();

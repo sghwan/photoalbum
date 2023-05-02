@@ -1,5 +1,6 @@
 package com.squarecross.photoalbum.service;
 
+import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.mapper.AlbumMapper;
@@ -9,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Service
 public class AlbumService {
@@ -38,5 +42,18 @@ public class AlbumService {
         albumDto.setCount(photoRepository.countByAlbumId(album.getId()));
 
         return albumDto;
+    }
+
+    public AlbumDto createAlbum(AlbumDto albumDto) throws IOException {
+        Album album = AlbumMapper.convertToModel(albumDto);
+        Album savedAlbum = albumRepository.save(album);
+        createDirectories(savedAlbum.getId());
+
+        return AlbumMapper.convertToDto(savedAlbum);
+    }
+
+    private void createDirectories(Long albumId) throws IOException {
+        Files.createDirectories(Paths.get(Constants.PATH_PREFIX + "\\photos\\original\\" + albumId));
+        Files.createDirectories(Paths.get(Constants.PATH_PREFIX + "\\photos\\thumb\\" + albumId));
     }
 }
