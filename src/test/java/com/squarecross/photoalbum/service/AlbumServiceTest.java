@@ -113,7 +113,7 @@ class AlbumServiceTest {
 
     @Test
     void getAlbums() throws InterruptedException {
-        List<AlbumDto> result = albumService.getAlbums("", "byDate");
+        List<AlbumDto> result = albumService.getAlbums("", "byDate", "asc");
         for (AlbumDto albumDto : result) {
             System.out.println("albumDto.getAlbumId() = " + albumDto.getAlbumId());
             System.out.println("albumDto.getAlbumName() = " + albumDto.getAlbumName());

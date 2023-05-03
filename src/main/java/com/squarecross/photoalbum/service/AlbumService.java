@@ -59,13 +59,19 @@ public class AlbumService {
         Files.createDirectories(Paths.get(Constants.PATH_PREFIX + "\\photos\\thumb\\" + albumId));
     }
 
-    public List<AlbumDto> getAlbums(String keyword, String sort) {
+    public List<AlbumDto> getAlbums(String keyword, String sort, String orderBy) {
         List<Album> result = null;
 
         if (sort.equals("byDate")) {
-            result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtDesc(keyword);
+            if (orderBy.equals("desc"))
+                result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtDesc(keyword);
+            else
+                result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtAsc(keyword);
         } else if (sort.equals("byName")) {
-            result = albumRepository.findAllByAlbumNameContainingOrderByAlbumNameAsc(keyword);
+            if (orderBy.equals("desc"))
+                result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtDesc(keyword);
+            else
+                result = albumRepository.findAllByAlbumNameContainingOrderByAlbumNameAsc(keyword);
         } else {
             throw new IllegalArgumentException("알 수 없는 정렬 기준입니다");
         }

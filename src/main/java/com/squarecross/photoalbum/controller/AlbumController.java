@@ -43,7 +43,8 @@ public class AlbumController {
 
     @GetMapping
     public List<AlbumDto> getAlbumList(@RequestParam(name = "keyword", defaultValue = "") final String keyword,
-                                       @RequestParam(name = "sort", defaultValue = "byDate") final String sort) {
-        return albumService.getAlbums(keyword, sort);
+                                       @RequestParam(name = "sort", defaultValue = "byDate") final String sort,
+                                       @RequestParam(name = "orderBy", defaultValue = "desc") final String orderBy) {
+        return albumService.getAlbums(keyword, sort, orderBy);
     }
 }

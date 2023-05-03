@@ -16,6 +16,13 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
     @Query("select a from Album a where a.name like %:keyword% order by a.createdAt desc")
     List<Album> findAllByAlbumNameContainingOrderByCreatedAtDesc(@Param("keyword") String keyword);
 
+    @Query("select a from Album a where a.name like %:keyword% order by a.createdAt")
+    List<Album> findAllByAlbumNameContainingOrderByCreatedAtAsc(@Param("keyword") String keyword);
+
+    @Query("select a from Album a where a.name like %:keyword% order by a.name desc")
+    List<Album> findAllByAlbumNameContainingOrderByAlbumNameDesc(@Param("keyword") String keyword);
+
     @Query("select a from Album a where a.name like %:keyword% order by a.name")
     List<Album> findAllByAlbumNameContainingOrderByAlbumNameAsc(@Param("keyword") String keyword);
+
 }
