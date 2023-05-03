@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PhotoRepository extends JpaRepository<Photo, Long> {
     @Query("select count(p) from Photo p where p.album.id = :albumId")
     int countByAlbumId(@Param("albumId") Long albumId);
 
     List<Photo> findTop4ByAlbum_IdOrderByUploadedAt(Long id);
+
+    Optional<Photo> findByFileNameAndAlbum_Id(String fileName, Long albumId);
 }
