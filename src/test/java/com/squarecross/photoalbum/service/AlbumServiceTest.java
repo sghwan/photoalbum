@@ -115,7 +115,7 @@ class AlbumServiceTest {
     }
 
     @Test
-    void getAlbums() throws InterruptedException {
+    void getAlbums() {
         List<AlbumDto> result = albumService.getAlbums("", "byDate", "asc");
         for (AlbumDto albumDto : result) {
             System.out.println("albumDto.getAlbumId() = " + albumDto.getAlbumId());
@@ -144,5 +144,20 @@ class AlbumServiceTest {
         AlbumDto result = albumService.getAlbum(savedAlbum.getId());
         assertThat(result.getAlbumId()).isEqualTo(updatedAlbum.getAlbumId());
         assertThat(result.getAlbumName()).isEqualTo("수정된 폴더");
+    }
+
+    @Test
+    void deleteAlbum() throws IOException {
+        AlbumDto albumDto = new AlbumDto();
+        albumDto.setAlbumName("새폴더");
+        AlbumDto createdAlbumDto = albumService.createAlbum(albumDto);
+        File origin = new File(Constants.PATH_PREFIX + "\\photos\\original\\" + createdAlbumDto.getAlbumId());
+        File thumb = new File(Constants.PATH_PREFIX + "\\photos\\thumb\\" + createdAlbumDto.getAlbumId());
+        assertThat(origin.mkdir()).isFalse();
+        assertThat(thumb.mkdir()).isFalse();
+
+        albumService.deleteAlbum(createdAlbumDto.getAlbumId());
+        assertThat(origin.exists()).isFalse();
+        assertThat(thumb.exists()).isFalse();
     }
 }

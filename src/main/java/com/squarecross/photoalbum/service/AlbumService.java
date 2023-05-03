@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,5 +101,31 @@ public class AlbumService {
         album.setName(albumDto.getAlbumName());
 
         return AlbumMapper.convertToDto(album);
+    }
+
+    public void deleteAlbum(Long albumId) throws IOException {
+        deleteDirectories(albumId);
+        albumRepository.deleteById(albumId);
+    }
+
+    private void deleteDirectories(Long albumId) throws IOException {
+        deleteDirectory(Paths.get(Constants.PATH_PREFIX + "\\photos\\original\\" + albumId));
+        deleteDirectory(Paths.get(Constants.PATH_PREFIX + "\\photos\\thumb\\" + albumId));
+    }
+
+    private void deleteDirectory(Path directory) throws IOException {
+        Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
+            }
+        });
     }
 }

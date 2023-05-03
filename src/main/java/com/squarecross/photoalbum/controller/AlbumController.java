@@ -52,4 +52,9 @@ public class AlbumController {
     public AlbumDto updateAlbumName(@PathVariable Long albumId, @RequestBody AlbumDto albumDto) {
         return albumService.updateAlbumName(albumId, albumDto);
     }
+
+    @DeleteMapping("/{albumId}")
+    public void deleteAlbum(@PathVariable Long albumId) throws IOException {
+        albumService.deleteAlbum(albumId);
+    }
 }
