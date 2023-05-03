@@ -8,6 +8,7 @@ import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
@@ -91,5 +92,14 @@ public class AlbumService {
         }
 
         return albumDtos;
+    }
+
+    @Transactional
+    public AlbumDto updateAlbumName(Long albumId, AlbumDto albumDto) {
+        Album album = albumRepository.findById(albumId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("앨범 아이디 %d로 조회 되지 않았습니다.", albumId)));
+        album.setName(albumDto.getAlbumName());
+
+        return AlbumMapper.convertToDto(album);
     }
 }

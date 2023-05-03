@@ -28,6 +28,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class AlbumServiceTest {
 
     @Autowired
+    EntityManager em;
+
+    @Autowired
     AlbumRepository albumRepository;
 
     @Autowired
@@ -122,5 +125,24 @@ class AlbumServiceTest {
                 System.out.println("thumbUrl = " + thumbUrl);
             }
         }
+    }
+
+    @Test
+    void updateAlbumName() {
+        Album album = new Album();
+        album.setName("새폴더");
+        Album savedAlbum = albumRepository.save(album);
+        em.flush();
+        em.clear();
+
+        AlbumDto albumDto = new AlbumDto();
+        albumDto.setAlbumName("수정된 폴더");
+        AlbumDto updatedAlbum = albumService.updateAlbumName(savedAlbum.getId(), albumDto);
+        em.flush();
+        em.clear();
+
+        AlbumDto result = albumService.getAlbum(savedAlbum.getId());
+        assertThat(result.getAlbumId()).isEqualTo(updatedAlbum.getAlbumId());
+        assertThat(result.getAlbumName()).isEqualTo("수정된 폴더");
     }
 }

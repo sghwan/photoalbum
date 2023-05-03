@@ -47,4 +47,9 @@ public class AlbumController {
                                        @RequestParam(name = "orderBy", defaultValue = "desc") final String orderBy) {
         return albumService.getAlbums(keyword, sort, orderBy);
     }
+
+    @PatchMapping("/{albumId}")
+    public AlbumDto updateAlbumName(@PathVariable Long albumId, @RequestBody AlbumDto albumDto) {
+        return albumService.updateAlbumName(albumId, albumDto);
+    }
 }
