@@ -10,3 +10,8 @@ spring:
       ddl-auto: update
     generate-ddl: true
     show-sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 1000KB
+      max-request-size: 1000KB
