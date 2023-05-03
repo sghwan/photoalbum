@@ -2,7 +2,9 @@ package com.squarecross.photoalbum.dto;
 
 import com.squarecross.photoalbum.domain.Album;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class AlbumDto {
 
@@ -10,16 +12,7 @@ public class AlbumDto {
     private String albumName;
     private Date createdAt;
     private int count;
-
-    public AlbumDto() {
-
-    }
-
-    public AlbumDto(Album album) {
-        albumId = album.getId();
-        albumName = album.getName();
-        createdAt = album.getCreatedAt();
-    }
+    private List<String> thumbUrls = new ArrayList<>();
 
     public Long getAlbumId() {
         return albumId;
@@ -51,5 +44,13 @@ public class AlbumDto {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public List<String> getThumbUrls() {
+        return thumbUrls;
+    }
+
+    public void setThumbUrls(List<String> thumbUrls) {
+        this.thumbUrls = thumbUrls;
     }
 }

@@ -13,6 +13,8 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AlbumService {
@@ -55,5 +57,33 @@ public class AlbumService {
     private void createDirectories(Long albumId) throws IOException {
         Files.createDirectories(Paths.get(Constants.PATH_PREFIX + "\\photos\\original\\" + albumId));
         Files.createDirectories(Paths.get(Constants.PATH_PREFIX + "\\photos\\thumb\\" + albumId));
+    }
+
+    public List<AlbumDto> getAlbums(String keyword, String sort) {
+        List<Album> result = null;
+
+        if (sort.equals("byDate")) {
+            result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtDesc(keyword);
+        } else if (sort.equals("byName")) {
+            result = albumRepository.findAllByAlbumNameContainingOrderByAlbumNameAsc(keyword);
+        } else {
+            throw new IllegalArgumentException("알 수 없는 정렬 기준입니다");
+        }
+
+        List<AlbumDto> albumDtos = AlbumMapper.convertToList(result);
+
+        for (AlbumDto albumDto : albumDtos) {
+            List<String> thumbUrls = photoRepository.findTop4ByAlbum_IdOrderByUploadedAt(albumDto.getAlbumId())
+                    .stream()
+                    .map(photo -> photo.getThumbUrl())
+                    .map(thumbUrl -> Constants.PATH_PREFIX + thumbUrl)
+                    .collect(Collectors.toList());
+            int count = photoRepository.countByAlbumId(albumDto.getAlbumId());
+
+            albumDto.setThumbUrls(thumbUrls);
+            albumDto.setCount(count);
+        }
+
+        return albumDtos;
     }
 }

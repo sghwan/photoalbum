@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/albums")
@@ -38,5 +39,11 @@ public class AlbumController {
     @ResponseStatus(value = HttpStatus.CREATED)
     public AlbumDto createAlbum(@RequestBody final AlbumDto albumDto) throws IOException {
         return albumService.createAlbum(albumDto);
+    }
+
+    @GetMapping
+    public List<AlbumDto> getAlbumList(@RequestParam(name = "keyword", defaultValue = "") final String keyword,
+                                       @RequestParam(name = "sort", defaultValue = "byDate") final String sort) {
+        return albumService.getAlbums(keyword, sort);
     }
 }

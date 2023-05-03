@@ -10,11 +10,6 @@ import java.util.List;
 @Entity
 @Table(name = "album", schema = "photo_album", uniqueConstraints = {@UniqueConstraint(columnNames = "album_id")})
 public class Album {
-
-    public Album() {
-
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "album_id", unique = true, nullable = false)

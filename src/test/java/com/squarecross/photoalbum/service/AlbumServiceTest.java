@@ -12,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -107,5 +109,18 @@ class AlbumServiceTest {
         boolean delete2 = thumb.delete();
         assertThat(delete1).isTrue();
         assertThat(delete2).isTrue();
+    }
+
+    @Test
+    void getAlbums() throws InterruptedException {
+        List<AlbumDto> result = albumService.getAlbums("", "byDate");
+        for (AlbumDto albumDto : result) {
+            System.out.println("albumDto.getAlbumId() = " + albumDto.getAlbumId());
+            System.out.println("albumDto.getAlbumName() = " + albumDto.getAlbumName());
+            System.out.println("albumDto.getCount() = " + albumDto.getCount());
+            for (String thumbUrl : albumDto.getThumbUrls()) {
+                System.out.println("thumbUrl = " + thumbUrl);
+            }
+        }
     }
 }
