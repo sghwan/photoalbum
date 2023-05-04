@@ -16,8 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -96,7 +97,6 @@ public class PhotoService {
         }
     }
 
-
     public void validateFiles(MultipartFile[] files) throws IOException {
         for (MultipartFile file : files) {
             if (ImageIO.read(file.getInputStream()) == null)
@@ -104,5 +104,12 @@ public class PhotoService {
             if (!Constants.EXT_LIST.contains(StringUtils.getFilenameExtension(file.getOriginalFilename())))
                 throw new IllegalArgumentException("이미지 파일만 올려주세요");
         }
+    }
+
+    public File getImageFile(Long photoId) throws IOException {
+        Photo photo = photoRepository.findById(photoId)
+                .orElseThrow(() -> new EntityNotFoundException("사진이 존재하지 않습니다."));
+        String fullPath = Constants.PATH_PREFIX + photo.getOriginalUrl();
+        return new File(fullPath);
     }
 }
