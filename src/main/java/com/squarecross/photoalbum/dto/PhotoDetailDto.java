@@ -2,10 +2,12 @@ package com.squarecross.photoalbum.dto;
 
 import java.util.Date;
 
-public class PhotoDto {
+public class PhotoDetailDto {
+
     private Long photoId;
     private String fileName;
-    private String thumbUrl;
+    private String originalUrl;
+    private int fileSize;
     private Date uploadedAt;
 
     public Long getPhotoId() {
@@ -24,12 +26,20 @@ public class PhotoDto {
         this.fileName = fileName;
     }
 
-    public String getThumbUrl() {
-        return thumbUrl;
+    public String getOriginalUrl() {
+        return originalUrl;
     }
 
-    public void setThumbUrl(String thumbUrl) {
-        this.thumbUrl = thumbUrl;
+    public void setOriginalUrl(String originalUrl) {
+        this.originalUrl = originalUrl;
+    }
+
+    public int getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(int fileSize) {
+        this.fileSize = fileSize;
     }
 
     public Date getUploadedAt() {

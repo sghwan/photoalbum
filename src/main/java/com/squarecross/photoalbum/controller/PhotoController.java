@@ -1,5 +1,6 @@
 package com.squarecross.photoalbum.controller;
 
+import com.squarecross.photoalbum.dto.PhotoDetailDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.service.PhotoService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -8,7 +9,6 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class PhotoController {
     }
 
     @GetMapping("/{photoId}")
-    public PhotoDto getPhoto(@PathVariable Long photoId) {
+    public PhotoDetailDto getPhoto(@PathVariable Long photoId) {
         return photoService.getPhoto(photoId);
     }
 
@@ -69,5 +69,12 @@ public class PhotoController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping
+    public List<PhotoDto> getPhotos(@PathVariable Long albumId,
+                                    @RequestParam(defaultValue = "byDate") String sort,
+                                    @RequestParam(defaultValue = "") String keyword) {
+        return photoService.getPhotos(albumId, keyword, sort);
     }
 }

@@ -3,6 +3,7 @@ package com.squarecross.photoalbum.service;
 import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.domain.Photo;
+import com.squarecross.photoalbum.dto.PhotoDetailDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.mapper.PhotoMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
@@ -17,11 +18,11 @@ import javax.imageio.ImageIO;
 import javax.persistence.EntityNotFoundException;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PhotoService {
@@ -37,11 +38,11 @@ public class PhotoService {
         this.albumRepository = albumRepository;
     }
 
-    public PhotoDto getPhoto(Long photoId) {
+    public PhotoDetailDto getPhoto(Long photoId) {
         Photo photo = photoRepository.findById(photoId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("사진 아이디 %d로 조회 되지 않았습니다.", photoId)));
 
-        return PhotoMapper.convertToDto(photo);
+        return PhotoMapper.convertToDetailDto(photo);
     }
 
     public PhotoDto savePhoto(MultipartFile file, Long albumId) throws IOException {
@@ -111,5 +112,19 @@ public class PhotoService {
                 .orElseThrow(() -> new EntityNotFoundException("사진이 존재하지 않습니다."));
         String fullPath = Constants.PATH_PREFIX + photo.getOriginalUrl();
         return new File(fullPath);
+    }
+
+    public List<PhotoDto> getPhotos(Long albumId, String keyword, String sort) {
+        List<Photo> result = null;
+
+        if (sort.equals("byDate")) {
+            result = photoRepository.findAllByAlbum_IdAndOrderByUploadedAt(albumId, keyword);
+        } else {
+            result = photoRepository.findAllByAlbum_IdAndOrderByFileName(albumId, keyword);
+
+        }
+
+        return result.stream().map(photo -> PhotoMapper.convertToDto(photo))
+                .collect(Collectors.toList());
     }
 }
