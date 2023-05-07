@@ -5,6 +5,7 @@ import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.domain.Photo;
 import com.squarecross.photoalbum.dto.PhotoDetailDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
+import com.squarecross.photoalbum.dto.PhotoIdsDto;
 import com.squarecross.photoalbum.mapper.PhotoMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
@@ -126,5 +127,14 @@ public class PhotoService {
 
         return result.stream().map(photo -> PhotoMapper.convertToDto(photo))
                 .collect(Collectors.toList());
+    }
+
+    public void deletePhotos(PhotoIdsDto photoIdsDto) throws IOException {
+        for (Photo photo : photoRepository.findAllById(photoIdsDto.getPhotoIds())) {
+            Files.deleteIfExists(Paths.get(Constants.PATH_PREFIX + photo.getOriginalUrl()));
+            Files.deleteIfExists(Paths.get(Constants.PATH_PREFIX + photo.getThumbUrl()));
+        }
+
+        photoRepository.deleteAllByIdInBatch(photoIdsDto.getPhotoIds());
     }
 }

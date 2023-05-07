@@ -2,6 +2,7 @@ package com.squarecross.photoalbum.controller;
 
 import com.squarecross.photoalbum.dto.PhotoDetailDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
+import com.squarecross.photoalbum.dto.PhotoIdsDto;
 import com.squarecross.photoalbum.service.PhotoService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,15 @@ public class PhotoController {
     public List<PhotoDto> getPhotos(@PathVariable Long albumId,
                                     @RequestParam(defaultValue = "byDate") String sort,
                                     @RequestParam(defaultValue = "") String keyword) {
+        return photoService.getPhotos(albumId, keyword, sort);
+    }
+
+    @DeleteMapping
+    public List<PhotoDto> deletePhotos(@PathVariable Long albumId,
+                                       @RequestParam(defaultValue = "byDate") String sort,
+                                       @RequestParam(defaultValue = "") String keyword,
+                                       @RequestBody PhotoIdsDto photoIdsDto) throws IOException {
+        photoService.deletePhotos(photoIdsDto);
         return photoService.getPhotos(albumId, keyword, sort);
     }
 }
