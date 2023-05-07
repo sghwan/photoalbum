@@ -30,8 +30,8 @@ public class PhotoService {
     private final PhotoRepository photoRepository;
     private final AlbumRepository albumRepository;
 
-    private final String original_path = Constants.PATH_PREFIX + "/photos/original";
-    private final String thumb_path = Constants.PATH_PREFIX + "/photos/thumb";
+    private final String original_path = Constants.PATH_PREFIX + "\\photos\\original";
+    private final String thumb_path = Constants.PATH_PREFIX + "\\photos\\thumb";
 
     @Autowired
     public PhotoService(PhotoRepository photoRepository, AlbumRepository albumRepository) {
@@ -84,11 +84,11 @@ public class PhotoService {
 
     private void saveFile(MultipartFile file, Long albumId, String fileName) {
         try {
-            String filePath = albumId + "/" + fileName;
-            Files.copy(file.getInputStream(), Paths.get(original_path + "/" + filePath));
+            String filePath = albumId + "\\" + fileName;
+            Files.copy(file.getInputStream(), Paths.get(original_path + "\\" + filePath));
 
             BufferedImage thumbImg = Scalr.resize(ImageIO.read(file.getInputStream()), Constants.THUMB_SIZE, Constants.THUMB_SIZE);
-            File thumbFile = new File(thumb_path + "/" + filePath);
+            File thumbFile = new File(thumb_path + "\\" + filePath);
             String ext = StringUtils.getFilenameExtension(fileName);
             if (ext == null) {
                 throw new IllegalArgumentException("No extension");
