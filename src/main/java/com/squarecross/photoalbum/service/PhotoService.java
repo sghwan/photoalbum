@@ -6,12 +6,14 @@ import com.squarecross.photoalbum.domain.Photo;
 import com.squarecross.photoalbum.dto.PhotoDetailDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.dto.PhotoIdsDto;
+import com.squarecross.photoalbum.dto.PhotoMoveDto;
 import com.squarecross.photoalbum.mapper.PhotoMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
 import com.squarecross.photoalbum.repository.PhotoRepository;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,8 +60,8 @@ public class PhotoService {
         Photo photo = new Photo();
         photo.setFileName(fileName);
         photo.setFileSize(size);
-        photo.setOriginalUrl("/photos/original/" + albumId + "/" + fileName);
-        photo.setThumbUrl("/photos/thumb/" + albumId + "/" + fileName);
+        photo.setOriginalUrl("\\photos\\original\\" + albumId + "\\" + fileName);
+        photo.setThumbUrl("\\photos\\thumb\\" + albumId + "\\" + fileName);
         photo.setAlbum(album);
         Photo savedPhoto = photoRepository.save(photo);
 
@@ -136,5 +138,31 @@ public class PhotoService {
         }
 
         photoRepository.deleteAllByIdInBatch(photoIdsDto.getPhotoIds());
+    }
+
+    @Transactional
+    public void movePhotos(PhotoMoveDto photoMoveDto) throws IOException {
+        Album album = albumRepository.findById(photoMoveDto.getToAlbumId())
+                .orElseThrow(() -> new EntityNotFoundException("이동할 앨범이 존재하지 않습니다."));
+
+        List<Photo> photos = photoRepository.findAllById(photoMoveDto.getPhotoIds());
+
+        for (Photo photo : photos) {
+            String originalUrl = photo.getOriginalUrl();
+            String thumbUrl = photo.getThumbUrl();
+            String fileName = getNextFileName(photo.getFileName(), photoMoveDto.getToAlbumId());
+
+            String srcOriginalUrl = Constants.PATH_PREFIX + originalUrl;
+            String srcThumbUrl = Constants.PATH_PREFIX + thumbUrl;
+            String dstOriginalUrl = Constants.PATH_PREFIX + "\\photos\\original\\" + photoMoveDto.getToAlbumId() + "\\" + fileName;
+            String dstThumbUrl = Constants.PATH_PREFIX + "\\photos\\thumb\\" + photoMoveDto.getToAlbumId() + "\\" + fileName;
+
+            Files.move(Paths.get(srcOriginalUrl), Paths.get(dstOriginalUrl));
+            Files.move(Paths.get(srcThumbUrl), Paths.get(dstThumbUrl));
+
+            photo.setAlbum(album);
+            photo.setOriginalUrl("\\photos\\original\\" + photoMoveDto.getToAlbumId() + "\\" + fileName);
+            photo.setThumbUrl("\\photos\\thumb\\" + photoMoveDto.getToAlbumId() + "\\" + fileName);
+        }
     }
 }

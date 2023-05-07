@@ -3,6 +3,7 @@ package com.squarecross.photoalbum.controller;
 import com.squarecross.photoalbum.dto.PhotoDetailDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.dto.PhotoIdsDto;
+import com.squarecross.photoalbum.dto.PhotoMoveDto;
 import com.squarecross.photoalbum.service.PhotoService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,5 +87,11 @@ public class PhotoController {
                                        @RequestBody PhotoIdsDto photoIdsDto) throws IOException {
         photoService.deletePhotos(photoIdsDto);
         return photoService.getPhotos(albumId, keyword, sort);
+    }
+
+    @PatchMapping("/move")
+    public List<PhotoDto> movePhotos(@RequestBody PhotoMoveDto photoMoveDto) throws IOException {
+        photoService.movePhotos(photoMoveDto);
+        return photoService.getPhotos(photoMoveDto.getFromAlbumId(), "", "byDate");
     }
 }
