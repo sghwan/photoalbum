@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class AlbumService {
 
     private final AlbumRepository albumRepository;
@@ -55,11 +56,6 @@ public class AlbumService {
         return AlbumMapper.convertToDto(savedAlbum);
     }
 
-    private void createDirectories(Long albumId) throws IOException {
-        Files.createDirectories(Paths.get(Constants.PATH_PREFIX + "\\photos\\original\\" + albumId));
-        Files.createDirectories(Paths.get(Constants.PATH_PREFIX + "\\photos\\thumb\\" + albumId));
-    }
-
     public List<AlbumDto> getAlbums(String keyword, String sort, String orderBy) {
         List<Album> result = null;
 
@@ -70,7 +66,7 @@ public class AlbumService {
                 result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtAsc(keyword);
         } else if (sort.equals("byName")) {
             if (orderBy.equals("desc"))
-                result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtDesc(keyword);
+                result = albumRepository.findAllByAlbumNameContainingOrderByAlbumNameDesc(keyword);
             else
                 result = albumRepository.findAllByAlbumNameContainingOrderByAlbumNameAsc(keyword);
         } else {
@@ -106,6 +102,11 @@ public class AlbumService {
     public void deleteAlbum(Long albumId) throws IOException {
         deleteDirectories(albumId);
         albumRepository.deleteById(albumId);
+    }
+
+    private void createDirectories(Long albumId) throws IOException {
+        Files.createDirectories(Paths.get(Constants.PATH_PREFIX + "\\photos\\original\\" + albumId));
+        Files.createDirectories(Paths.get(Constants.PATH_PREFIX + "\\photos\\thumb\\" + albumId));
     }
 
     private void deleteDirectories(Long albumId) throws IOException {

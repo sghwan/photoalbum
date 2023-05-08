@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AlbumMapper {
-
     public static AlbumDto convertToDto(Album album) {
         AlbumDto albumDto = new AlbumDto();
         albumDto.setAlbumId(album.getId());

@@ -28,6 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class PhotoService {
     private final PhotoRepository photoRepository;
     private final AlbumRepository albumRepository;
@@ -48,7 +49,7 @@ public class PhotoService {
         return PhotoMapper.convertToDetailDto(photo);
     }
 
-    public PhotoDto savePhoto(MultipartFile file, Long albumId) throws IOException {
+    public PhotoDto savePhoto(MultipartFile file, Long albumId) {
         Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new EntityNotFoundException("앨범이 존재하지 않습니다."));
 
@@ -57,48 +58,9 @@ public class PhotoService {
         fileName = getNextFileName(fileName, albumId);
         saveFile(file, albumId, fileName);
 
-        Photo photo = new Photo();
-        photo.setFileName(fileName);
-        photo.setFileSize(size);
-        photo.setOriginalUrl("\\photos\\original\\" + albumId + "\\" + fileName);
-        photo.setThumbUrl("\\photos\\thumb\\" + albumId + "\\" + fileName);
-        photo.setAlbum(album);
-        Photo savedPhoto = photoRepository.save(photo);
+        Photo savedPhoto = photoRepository.save(Photo.createPhoto(albumId, album, fileName, size));
 
         return PhotoMapper.convertToDto(savedPhoto);
-    }
-
-    private String getNextFileName(String fileName, Long albumId) {
-        String fileNameNoExt = StringUtils.stripFilenameExtension(fileName);
-        String ext = StringUtils.getFilenameExtension(fileName);
-
-        Optional<Photo> res = photoRepository.findByFileNameAndAlbum_Id(fileName, albumId);
-
-        int count = 2;
-        while (res.isPresent()) {
-            fileName = String.format("%s (%d).%s", fileNameNoExt, count, ext);
-            res = photoRepository.findByFileNameAndAlbum_Id(fileName, albumId);
-            count++;
-        }
-
-        return fileName;
-    }
-
-    private void saveFile(MultipartFile file, Long albumId, String fileName) {
-        try {
-            String filePath = albumId + "\\" + fileName;
-            Files.copy(file.getInputStream(), Paths.get(original_path + "\\" + filePath));
-
-            BufferedImage thumbImg = Scalr.resize(ImageIO.read(file.getInputStream()), Constants.THUMB_SIZE, Constants.THUMB_SIZE);
-            File thumbFile = new File(thumb_path + "\\" + filePath);
-            String ext = StringUtils.getFilenameExtension(fileName);
-            if (ext == null) {
-                throw new IllegalArgumentException("No extension");
-            }
-            ImageIO.write(thumbImg, ext, thumbFile);
-        } catch (Exception e) {
-            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
-        }
     }
 
     public void validateFiles(MultipartFile[] files) throws IOException {
@@ -148,21 +110,54 @@ public class PhotoService {
         List<Photo> photos = photoRepository.findAllById(photoMoveDto.getPhotoIds());
 
         for (Photo photo : photos) {
-            String originalUrl = photo.getOriginalUrl();
-            String thumbUrl = photo.getThumbUrl();
             String fileName = getNextFileName(photo.getFileName(), photoMoveDto.getToAlbumId());
-
-            String srcOriginalUrl = Constants.PATH_PREFIX + originalUrl;
-            String srcThumbUrl = Constants.PATH_PREFIX + thumbUrl;
-            String dstOriginalUrl = Constants.PATH_PREFIX + "\\photos\\original\\" + photoMoveDto.getToAlbumId() + "\\" + fileName;
-            String dstThumbUrl = Constants.PATH_PREFIX + "\\photos\\thumb\\" + photoMoveDto.getToAlbumId() + "\\" + fileName;
-
-            Files.move(Paths.get(srcOriginalUrl), Paths.get(dstOriginalUrl));
-            Files.move(Paths.get(srcThumbUrl), Paths.get(dstThumbUrl));
-
-            photo.setAlbum(album);
-            photo.setOriginalUrl("\\photos\\original\\" + photoMoveDto.getToAlbumId() + "\\" + fileName);
-            photo.setThumbUrl("\\photos\\thumb\\" + photoMoveDto.getToAlbumId() + "\\" + fileName);
+            String movedOriginalFilePath = moveFile(photoMoveDto.getToAlbumId(), photo.getOriginalUrl(), fileName, original_path);
+            String movedThumbFilePath = moveFile(photoMoveDto.getToAlbumId(), photo.getThumbUrl(), fileName, thumb_path);
+            photo.updateAlbum(album, movedOriginalFilePath, movedThumbFilePath);
         }
+    }
+
+    private String getNextFileName(String fileName, Long albumId) {
+        String fileNameNoExt = StringUtils.stripFilenameExtension(fileName);
+        String ext = StringUtils.getFilenameExtension(fileName);
+
+        Optional<Photo> res = photoRepository.findByFileNameAndAlbum_Id(fileName, albumId);
+
+        int count = 2;
+        while (res.isPresent()) {
+            fileName = String.format("%s (%d).%s", fileNameNoExt, count, ext);
+            res = photoRepository.findByFileNameAndAlbum_Id(fileName, albumId);
+            count++;
+        }
+
+        return fileName;
+    }
+
+    private void saveFile(MultipartFile file, Long albumId, String fileName) {
+        try {
+            String filePath = albumId + "\\" + fileName;
+            Files.copy(file.getInputStream(), Paths.get(original_path + "\\" + filePath));
+
+            BufferedImage thumbImg = Scalr.resize(ImageIO.read(file.getInputStream()), Constants.THUMB_SIZE, Constants.THUMB_SIZE);
+            File thumbFile = new File(thumb_path + "\\" + filePath);
+            String ext = StringUtils.getFilenameExtension(fileName);
+
+            if (ext == null) {
+                throw new IllegalArgumentException("No extension");
+            }
+
+            ImageIO.write(thumbImg, ext, thumbFile);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+        }
+    }
+
+    private String moveFile(Long toAlbumId, String url, String fileName, String path) throws IOException {
+        String toMoveFilePath = toAlbumId + "\\" + fileName;
+        String srcUrl = Constants.PATH_PREFIX + url;
+        String dstUrl = path + "\\" + toMoveFilePath;
+        Files.move(Paths.get(srcUrl), Paths.get(dstUrl));
+
+        return toMoveFilePath;
     }
 }
