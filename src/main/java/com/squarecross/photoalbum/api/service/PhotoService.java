@@ -1,4 +1,4 @@
-package com.squarecross.photoalbum.service;
+package com.squarecross.photoalbum.api.service;
 
 import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 @Transactional(readOnly = true)
 public class PhotoService {
     private final PhotoRepository photoRepository;

@@ -1,4 +1,4 @@
-package com.squarecross.photoalbum.service;
+package com.squarecross.photoalbum.api.service;
 
 import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
@@ -17,7 +17,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 @Transactional(readOnly = true)
 public class AlbumService {
 
@@ -48,6 +48,7 @@ public class AlbumService {
         return albumDto;
     }
 
+    @Transactional
     public AlbumDto createAlbum(AlbumDto albumDto) throws IOException {
         Album album = AlbumMapper.convertToModel(albumDto);
         Album savedAlbum = albumRepository.save(album);
@@ -79,7 +80,6 @@ public class AlbumService {
             List<String> thumbUrls = photoRepository.findTop4ByAlbum_IdOrderByUploadedAt(albumDto.getAlbumId())
                     .stream()
                     .map(photo -> photo.getThumbUrl())
-                    .map(thumbUrl -> Constants.PATH_PREFIX + thumbUrl)
                     .collect(Collectors.toList());
             int count = photoRepository.countByAlbumId(albumDto.getAlbumId());
 

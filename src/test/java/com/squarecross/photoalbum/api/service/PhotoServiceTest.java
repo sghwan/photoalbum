@@ -1,4 +1,4 @@
-package com.squarecross.photoalbum.service;
+package com.squarecross.photoalbum.api.service;
 
 import com.squarecross.photoalbum.domain.Album;
 import com.squarecross.photoalbum.domain.Photo;

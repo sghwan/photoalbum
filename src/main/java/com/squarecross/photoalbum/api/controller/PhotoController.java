@@ -1,12 +1,16 @@
-package com.squarecross.photoalbum.controller;
+package com.squarecross.photoalbum.api.controller;
 
+import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.dto.PhotoDetailDto;
 import com.squarecross.photoalbum.dto.PhotoDto;
 import com.squarecross.photoalbum.dto.PhotoIdsDto;
 import com.squarecross.photoalbum.dto.PhotoMoveDto;
-import com.squarecross.photoalbum.service.PhotoService;
+import com.squarecross.photoalbum.api.service.PhotoService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,8 +22,10 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-@RestController
-@RequestMapping("/albums/{albumId}/photos")
+//@RestController
+@RequestMapping("/api/albums/{albumId}/photos")
+@CrossOrigin
+@Slf4j
 public class PhotoController {
     private final PhotoService photoService;
 
@@ -94,4 +100,11 @@ public class PhotoController {
         photoService.movePhotos(photoMoveDto);
         return photoService.getPhotos(photoMoveDto.getFromAlbumId(), "", "byDate");
     }
+
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource downloadImage(@PathVariable Long albumId, @PathVariable String filename) throws IOException {
+        return new UrlResource("file:" + Constants.PATH_PREFIX + "\\photos\\thumb\\" + albumId + "\\" + filename);
+    }
+
 }

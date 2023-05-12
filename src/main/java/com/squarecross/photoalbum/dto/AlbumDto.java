@@ -1,7 +1,5 @@
 package com.squarecross.photoalbum.dto;
 
-import com.squarecross.photoalbum.domain.Album;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
