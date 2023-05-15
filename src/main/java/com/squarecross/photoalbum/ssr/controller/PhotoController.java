@@ -43,6 +43,11 @@ public class PhotoController {
         return "photos/photoDetail";
     }
 
+    @GetMapping("/upload")
+    public String uploadForm() throws IOException {
+        return "photos/uploadForm";
+    }
+
     @PostMapping("/upload")
     public String uploadPhotos(@PathVariable Long albumId, @RequestParam("photos") MultipartFile[] files, Model model) throws IOException {
         photoService.validateFiles(files);

@@ -1,0 +1,273 @@
+body {
+  margin: 1px;
+}
+
+/* div {
+    border: 1px solid;
+} */
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.header {
+  width: 100%;
+}
+
+.title {
+  color: #a44a21;
+  margin: 10px;
+  margin-left: 30px;
+}
+
+.sub-title {
+  color: #a44a21;
+  margin-top: 20px;
+  margin-left: 30px;
+  margin-bottom: 60px;
+}
+
+.line {
+  border: 1px solid;
+  color: #bebebe;
+}
+
+.galleries {
+  margin: 10px;
+}
+
+.sub-title2 {
+  color: #a44a21;
+  margin-top: 0;
+  margin-bottom: 10px;
+  margin-left: 20px;
+}
+
+.album-list {
+  margin-top: 45px;
+  margin-left: 60px;
+  margin-right: 60px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.album-col {
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.album {
+  width: 230px;
+  height: 270px;
+  margin-left: 27px;
+  margin-right: 27px;
+
+  background-image: url("../../assets/album.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.album-img {
+  width: 100%;
+  height: 100%;
+}
+
+.create-box {
+  width: 190px;
+  height: 190px;
+  margin-top: 25px;
+  margin-left: 20px;
+  border: 1px solid #bebebe;
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.create-box:hover {
+  background-color: #bebebe;
+  cursor: pointer;
+}
+
+.photo-box {
+  width: 190px;
+  height: 190px;
+  margin-top: 25px;
+  margin-left: 20px;
+  border: 1px solid #bebebe;
+  border-radius: 5px;
+
+  position: relative;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.photo-box:hover {
+    background-color: rgba(190, 190, 190, 0.7);
+}
+
+.move-btn {
+    display: none;
+}
+
+.move-btn:hover {
+    cursor:pointer;
+}
+
+.delete-btn {
+    display: none;
+}
+
+.photo-box:hover .move-btn {
+    display: block;
+    width: 100px;
+    height 40px;
+    border: 1px solid #A44A21;
+    background-color: white;
+    position: absolute;
+
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #A44A21;
+    padding: 10px;
+}
+
+.photo-box:hover .delete-btn {
+    display: block;
+    width: 100%;
+    height 60px;
+    background-color: white;
+    border-radius: 5px;
+    position: absolute;
+    top: 160px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.delete-sentence {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    color: #A44A21;
+    margin: 5px;
+
+    border:none;
+    background-color:white;
+}
+
+.album-title {
+  text-align: center;
+  width: 90px;
+  height: 18px;
+  font-size: 15px;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.photo {
+  width: 85px;
+  height: 85px;
+  border: 1px solid black;
+  display: block;
+}
+
+.photo-count {
+  width: 79px;
+  height: 30px;
+  margin-left: 9px;
+  margin-top: 11px;
+
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #a44a21;
+}
+
+.sub-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.sort-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#sort {
+  border: none;
+  margin-bottom: 7px;
+}
+
+.vertical-line {
+  height: 30px;
+  border: 1px solid #bebebe;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 7px;
+}
+
+.search-bar {
+  width: 400px;
+  height: 30px;
+  border-radius: 9px;
+  margin-bottom: 7px;
+}
+
+.search-btn {
+  margin-right: 20px;
+  width: auto;
+  height: 30px;
+  border-radius: 9px;
+  margin-bottom: 7px;
+  border-color: white;
+
+  background-color: #e6864e;
+  color: #fff;
+}
+
+#create-sentence {
+  margin-top: 10px;
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 21px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #000000;
+}
+
+.modal-btn {
+  background-color: #e6864e;
+  color: #fff;
+  border: none;
+  width: 120px;
+  height: 40px;
+  text-align: center;
+}

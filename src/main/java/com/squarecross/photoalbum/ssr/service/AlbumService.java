@@ -49,12 +49,11 @@ public class AlbumService {
     }
 
     @Transactional
-    public AlbumDto createAlbum(AlbumDto albumDto) throws IOException {
-        Album album = AlbumMapper.convertToModel(albumDto);
+    public void createAlbum(String albumName) throws IOException {
+        Album album = new Album();
+        album.setName(albumName);
         Album savedAlbum = albumRepository.save(album);
         createDirectories(savedAlbum.getId());
-
-        return AlbumMapper.convertToDto(savedAlbum);
     }
 
     public List<AlbumDto> getAlbums(String keyword, String sort, String orderBy) {
@@ -79,7 +78,7 @@ public class AlbumService {
         for (AlbumDto albumDto : albumDtos) {
             List<String> thumbUrls = photoRepository.findTop4ByAlbum_IdOrderByUploadedAt(albumDto.getAlbumId())
                     .stream()
-                    .map(photo -> photo.getThumbUrl())
+                    .map(photo -> photo.getFileName())
                     .collect(Collectors.toList());
             int count = photoRepository.countByAlbumId(albumDto.getAlbumId());
 
@@ -91,10 +90,10 @@ public class AlbumService {
     }
 
     @Transactional
-    public AlbumDto updateAlbumName(Long albumId, AlbumDto albumDto) {
+    public AlbumDto updateAlbumName(Long albumId, String albumName) {
         Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("앨범 아이디 %d로 조회 되지 않았습니다.", albumId)));
-        album.setName(albumDto.getAlbumName());
+        album.setName(albumName);
 
         return AlbumMapper.convertToDto(album);
     }

@@ -5,7 +5,6 @@ import com.squarecross.photoalbum.ssr.service.AlbumService;
 import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.ssr.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,9 +40,8 @@ public class AlbumController {
     }
 
     @PostMapping
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public String createAlbum(@RequestBody final AlbumDto albumDto) throws IOException {
-        albumService.createAlbum(albumDto);
+    public String createAlbum(@RequestParam("albumName") String albumName) throws IOException {
+        albumService.createAlbum(albumName);
         return "redirect:/albums";
     }
 
@@ -54,13 +52,15 @@ public class AlbumController {
                                Model model) {
         List<AlbumDto> albums = albumService.getAlbums(keyword, sort, orderBy);
         model.addAttribute("albums", albums);
+        model.addAttribute("sort", sort);
+        model.addAttribute("keyword", keyword);
 
         return "albums/albumList";
     }
 
     @PostMapping("/{albumId}/update")
-    public String updateAlbumName(@PathVariable Long albumId, @RequestBody AlbumDto albumDto) {
-        AlbumDto album = albumService.updateAlbumName(albumId, albumDto);
+    public String updateAlbumName(@PathVariable Long albumId, @RequestParam String albumName) {
+        AlbumDto album = albumService.updateAlbumName(albumId, albumName);
         return "redirect:/albums/" + album.getAlbumId();
     }
 
