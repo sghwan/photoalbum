@@ -39,6 +39,7 @@ public class PhotoController {
     public String getPhoto(@PathVariable Long photoId, Model model) {
         PhotoDetailDto photo = photoService.getPhoto(photoId);
         model.addAttribute("photo", photo);
+        model.addAttribute("photoIdsDto", new PhotoIdsDto());
 
         return "photos/photoDetail";
     }
@@ -98,7 +99,7 @@ public class PhotoController {
     public String deletePhotos(@PathVariable Long albumId,
                                @RequestParam(defaultValue = "byDate") String sort,
                                @RequestParam(defaultValue = "") String keyword,
-                               @RequestBody PhotoIdsDto photoIdsDto) throws IOException {
+                               @ModelAttribute PhotoIdsDto photoIdsDto) throws IOException {
         photoService.deletePhotos(photoIdsDto);
         return "redirect:/albums/" + albumId;
     }

@@ -1,6 +1,7 @@
 package com.squarecross.photoalbum.ssr.controller;
 
 import com.squarecross.photoalbum.dto.PhotoDto;
+import com.squarecross.photoalbum.dto.PhotoIdsDto;
 import com.squarecross.photoalbum.ssr.service.AlbumService;
 import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.ssr.service.PhotoService;
@@ -35,6 +36,7 @@ public class AlbumController {
 
         model.addAttribute("album", album);
         model.addAttribute("photos", photos);
+        model.addAttribute("photoIdsDto", new PhotoIdsDto());
 
         return "albums/albumDetail";
     }

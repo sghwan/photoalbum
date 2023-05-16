@@ -46,16 +46,19 @@
             <div style="display: inline-block;" th:text="${album.count} + ' 장'">전체 사진 개수</div>
         </div>
     </div>
+
     <div class="galleries">
         <div class="sub-header">
             <div class="check-btn">
-                <img src="../assets/check.png" alt="" class="check">
+                <img src="/assets/check.png" alt="" class="check">
                 <div class="check-sentence">전체 선택하기</div>
             </div>
             <div class="icon-box">
-                <img src="../assets/move.png" alt="이동" class="move">
-                <img src="../assets/download.png" alt="다운로드" class="download">
-                <img src=" ../assets/bin.png" alt="휴지통" class="bin">
+                <img src="/assets/move.png" alt="이동" class="move" th:onclick="">
+                <img src="/assets/download.png" alt="다운로드" class="download"
+                     th:onclick="|submitForm('get', ${album.albumId}, 'download')|">
+                <img src="/assets/bin.png" alt="휴지통" class="bin"
+                     th:onclick="|submitForm('post', ${album.albumId}, 'delete')|">
                 <select name="sort" id="sort">
                     <option value="byName">이름순 a-z</option>
                     <option value="byDate">생성날짜순</option>
@@ -63,12 +66,25 @@
             </div>
         </div>
         <div class="line" style="margin-bottom: 10px;"></div>
-        <div class="photo-list">
-            <div class="photo-middle" th:each="photo : ${photos}">
-                <img class="photo-img" th:src="@{/albums/{albumId}/photos/images/{filename}(albumId=${album.albumId}, filename=${photo.fileName})}">
-                <div class="photo-title" th:text="${photo.fileName}">사진 이름</div>
+        <form th:id="photo-form" th:object="${photoIdsDto}">
+            <div class="photo-list">
+                <div class="photo-middle" th:each="photo : ${photos}" th:id="${photo.photoId}">
+                    <!--모델로 부터 받은 오브젝트 내의 List의 변수명과 input의 name속성을 일치시킴으로써 컨트롤러로 list를 담는 dto를 넘길수 있었다.!!!!-->
+                    <input type="checkbox" class="cb" th:id="'cb' + ${photo.photoId}" th:value="${photo.photoId}" name="photoIds">
+                    <label th:for="'cb' + ${photo.photoId}" th:id="'la' + ${photo.photoId}">
+                        <div class="box">
+                            <img class="circle" src="/assets/circle.png">
+                            <img class="check-i" src="/assets/check-i.png">
+                            <img class="photo-img"
+                                 th:src="@{/albums/{albumId}/photos/images/{filename}(albumId=${album.albumId}, filename=${photo.fileName})}">
+                            <img class="detail-i" src="/assets/detail.png"
+                                 th:onclick="|detailClick(${album.albumId}, ${photo.photoId})|">
+                            <div class="photo-title" th:text="${photo.fileName}">사진 이름</div>
+                        </div>
+                    </label>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 <!-- Modal -->
