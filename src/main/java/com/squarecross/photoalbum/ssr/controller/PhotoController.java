@@ -97,8 +97,6 @@ public class PhotoController {
 
     @PostMapping("/delete")
     public String deletePhotos(@PathVariable Long albumId,
-                               @RequestParam(defaultValue = "byDate") String sort,
-                               @RequestParam(defaultValue = "") String keyword,
                                @ModelAttribute PhotoIdsDto photoIdsDto) throws IOException {
         photoService.deletePhotos(photoIdsDto);
         return "redirect:/albums/" + albumId;

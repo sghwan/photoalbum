@@ -91,6 +91,8 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  position: relative;
 }
 
 #sort {
@@ -120,6 +122,8 @@ body {
 .icon-box {
   display: flex;
   align-items: center;
+
+  position: relative;
 }
 
 .move {
@@ -277,3 +281,141 @@ label .box {
     cursor: pointer;
     z-index: 2;
 }
+
+/*------------------이동박스------------------*/
+.move-box {
+    width: 360px;
+    height: 300px;
+
+    position: absolute;
+    top: 25px;
+    right: 195px;
+    z-index: 2;
+}
+
+.polygon {
+    width: 0px;
+    height: 0px;
+    border-bottom: calc( 10px * 1.732 ) solid #902828;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+
+    margin-left: 296px;
+}
+
+.move-list {
+    width: 100%;
+    height: 300px;
+    background-color: white;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* 아래의 모든 코드는 영역::코드로 사용 */
+.move-list::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+}
+
+.move-list::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background: #BCBCBC; /* 스크롤바의 색상 */
+
+    border-radius: 10px;
+}
+
+.move-list::-webkit-scrollbar-track {
+    background: white;  /*스크롤바 뒷 배경 색상*/
+}
+
+.create-box-xs {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    margin: 10px 0px;
+}
+
+.create-btn-xs {
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    margin-left: 30px;
+    border-radius: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.plus-ratio {
+    display: block;
+    width: 40%;
+    height: 40%;
+}
+
+.create-sentence-xs {
+    margin-left: 25px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #902828
+}
+
+.album-xs {
+    width: 100%;
+    height: 80px;
+
+    display: flex;
+    align-items: center;
+
+    margin: 10px 0px;
+}
+
+.photo-box-xs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items:center;
+
+    width: 70px;
+    height: 70px;
+    margin-left: 20px;
+    border: 1px solid #902828;
+    border-radius: 5px;
+}
+
+.photo-xs {
+    display: block;
+    width: 30px;
+    height: 30px;
+}
+
+.album-info-xs {
+    margin-left: 20px;
+}
+
+.album-name-xs {
+    font-size: 14px;
+    font-weight:
+    bold; color: #902828
+}
+
+.album-created-xs {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+    border-right: 1px solid black;
+    padding-right: 5px;
+}
+
+.photo-count-xs {
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.sub-move-box {
+    border: 1px solid #902828;
+    background-color: white;
+}
+/*----------------------------------------*/

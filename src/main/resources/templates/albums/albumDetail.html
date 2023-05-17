@@ -63,6 +63,34 @@
                     <option value="byName">이름순 a-z</option>
                     <option value="byDate">생성날짜순</option>
                 </select>
+
+                <!--이동 박스-->
+                <div class="move-box" style="display: none;">
+                    <div class="polygon"></div>
+                    <div class="sub-move-box">
+                        <div class="create-box-xs">
+                            <div class="create-btn-xs">
+                                <img class="plus-ratio" src="/assets/plus.png">
+                            </div>
+                            <div class="create-sentence-xs">새 앨범 생성</div>
+                        </div>
+                        <div class="move-list">
+                            <div class="album-xs" th:each="al : ${albums}">
+                                <div class="photo-box-xs">
+                                    <img class="photo-xs" th:each="thumb : ${al.thumbUrls}"
+                                         th:src="@{/albums/{albumId}/photos/images/{filename}(albumId=${al.albumId}, filename=${thumb})}">
+                                </div>
+                                <div class="album-info-xs">
+                                    <div class="album-name-xs" th:text="${al.albumName}">앨범</div>
+                                    <div>
+                                        <div class="album-created-sx" th:text="${al.createdAt}"></div>
+                                        <div class="photo-count-xs" th:text="${al.count} + '장'"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="line" style="margin-bottom: 10px;"></div>
@@ -70,7 +98,8 @@
             <div class="photo-list">
                 <div class="photo-middle" th:each="photo : ${photos}" th:id="${photo.photoId}">
                     <!--모델로 부터 받은 오브젝트 내의 List의 변수명과 input의 name속성을 일치시킴으로써 컨트롤러로 list를 담는 dto를 넘길수 있었다.!!!!-->
-                    <input type="checkbox" class="cb" th:id="'cb' + ${photo.photoId}" th:value="${photo.photoId}" name="photoIds">
+                    <input type="checkbox" class="cb" th:id="'cb' + ${photo.photoId}" th:value="${photo.photoId}"
+                           name="photoIds">
                     <label th:for="'cb' + ${photo.photoId}" th:id="'la' + ${photo.photoId}">
                         <div class="box">
                             <img class="circle" src="/assets/circle.png">

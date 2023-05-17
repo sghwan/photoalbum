@@ -33,8 +33,10 @@ public class AlbumController {
                                Model model) {
         AlbumDto album = albumService.getAlbum(albumId);
         List<PhotoDto> photos = photoService.getPhotos(albumId, keyword, sort);
+        List<AlbumDto> albums = albumService.getAlbums(keyword, sort, "asc");
 
         model.addAttribute("album", album);
+        model.addAttribute("albums", albums);
         model.addAttribute("photos", photos);
         model.addAttribute("photoIdsDto", new PhotoIdsDto());
 

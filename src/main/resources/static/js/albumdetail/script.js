@@ -10,6 +10,7 @@ const $download = document.getElementsByClassName("download")[0];
 const $bin = document.getElementsByClassName("bin")[0];
 const $form = document.getElementById("photo-form");
 const $cbArr = document.getElementsByClassName("cb");
+const $moveBox = document.getElementsByClassName("move-box")[0];
 
 $backBtn.addEventListener("click", () => {
   location.href = "/albums";
@@ -25,6 +26,14 @@ $close.addEventListener("click", () => {
   $modal.style.display = "none";
 });
 
+$move.addEventListener("click", () => {
+  if($moveBox.style.display == "none") {
+    $moveBox.style.display = "block";
+  } else {
+    $moveBox.style.display = "none";
+  }
+});
+
 function detailClick(albumId, photoId) {
     location.href='/albums/' + albumId +'/photos/' + photoId;
     const $label = document.getElementById("la" + photoId);
@@ -35,23 +44,7 @@ function detailClick(albumId, photoId) {
 
 function submitForm(method, albumId, control) {
     $form.setAttribute("method", method);
-    let path = "/albums/" + albumId +"/photos/" + control;
-    let arr = getCheckedPhotos();
-    if (control == "download") {
-        let joined = arr.join(",")
-        path += "?photoIds=" + joined;
-    }
+    const path = "/albums/" + albumId +"/photos/" + control;
     $form.setAttribute("action", path);
     $form.submit();
 };
-
-function getCheckedPhotos() {
-    let arr = new Array();
-    let cnt = 0;
-    for(let i = 0; i < $cbArr.length; i++) {
-        if($cbArr[i].checked) {
-            arr[cnt++] = $cbArr[i].id.substring(2);
-        }
-    }
-    return arr;
-}
