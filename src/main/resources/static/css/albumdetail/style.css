@@ -418,4 +418,16 @@ label .box {
     border: 1px solid #902828;
     background-color: white;
 }
+
+.move-btn {
+    border: 1px solid #902828;
+    margin-left: 50px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #902828
+}
+
+.move-btn:hover {
+    cursor: pointer;
+}
 /*----------------------------------------*/

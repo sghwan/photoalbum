@@ -18,6 +18,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.min.js"
             integrity="sha384-Y4oOpwW3duJdCWv5ly8SCFYWqFDsfob/3GkgExXKV4idmbt98QcxXYs9UoXAB7BZ"
             crossorigin="anonymous"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.7.0.js"
+            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+            crossorigin="anonymous"></script>
     </body>
 </head>
 
@@ -41,7 +45,7 @@
             <button class="add-btn" type="button" style="width: 200px; height: 50px; margin-right: 30px;"
                     th:onclick="|location.href='@{/albums/{albumId}/photos/upload(albumId=${album.albumId})}'|">사진 추가
             </button>
-            <div style="display: inline-block;" th:text="${album.createdAt}">2023-05-14</div>
+            <div style="display: inline-block;" th:text="${#dates.format(album.createdAt, 'yyyy-MM-dd')}">2023-05-14</div>
             <div class="vertical-line" style="display: inline-block;"></div>
             <div style="display: inline-block;" th:text="${album.count} + ' 장'">전체 사진 개수</div>
         </div>
@@ -64,7 +68,7 @@
                     <option value="byDate">생성날짜순</option>
                 </select>
 
-                <!--이동 박스-->
+                <!--이동 박스 ajax로 데이터 보내고 @RequestBody로 받고 ajax success시 다시 location.href를 /albums/albumId로 보내서 화면을 다시 받아와야할 것 같다.-->
                 <div class="move-box" style="display: none;">
                     <div class="polygon"></div>
                     <div class="sub-move-box">
@@ -83,10 +87,11 @@
                                 <div class="album-info-xs">
                                     <div class="album-name-xs" th:text="${al.albumName}">앨범</div>
                                     <div>
-                                        <div class="album-created-sx" th:text="${al.createdAt}"></div>
+                                        <div class="album-created-sx" th:text="${#dates.format(al.createdAt, 'yyyy-MM-dd')}"></div>
                                         <div class="photo-count-xs" th:text="${al.count} + '장'"></div>
                                     </div>
                                 </div>
+                                <div class="move-btn" th:if="${al.albumId} != ${album.albumId}" th:onclick="|moveSubmit(${album.albumId}, ${al.albumId})|">파일 이동</div>
                             </div>
                         </div>
                     </div>
