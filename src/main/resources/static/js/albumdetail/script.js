@@ -11,6 +11,8 @@ const $bin = document.getElementsByClassName("bin")[0];
 const $form = document.getElementById("photo-form");
 const $cbArr = document.getElementsByClassName("cb");
 const $moveBox = document.getElementsByClassName("move-box")[0];
+const $check = document.getElementsByClassName("check")[0];
+const $checkSentence = document.getElementsByClassName("check-sentence")[0];
 
 $backBtn.addEventListener("click", () => {
   location.href = "/albums";
@@ -33,6 +35,8 @@ $move.addEventListener("click", () => {
     $moveBox.style.display = "none";
   }
 });
+
+
 
 function detailClick(albumId, photoId) {
     location.href='/albums/' + albumId +'/photos/' + photoId;
@@ -82,4 +86,24 @@ function getCheckedPhotoIds() {
     }
 
     return photoIds;
+}
+
+function checkAllPhotos() {
+    if($checkBtn.id == "no-filter") {
+        for(let i = 0; i < $cbArr.length; i++) {
+            $cbArr[i].checked = true;
+        }
+        $check.style.filter = "opacity(0.5) drop-shadow(0 0 0 #A44A21)";
+        $checkBtn.id = "filter";
+        $checkSentence.style.color = "#A44A21";
+        $checkSentence.style.fontWeight = "bold";
+    } else {
+        for(let i = 0; i < $cbArr.length; i++) {
+            $cbArr[i].checked = false;
+        }
+        $check.style.filter = "none";
+        $checkBtn.id = "no-filter";
+        $checkSentence.style.color = "black";
+        $checkSentence.style.fontWeight = "normal";
+    }
 }

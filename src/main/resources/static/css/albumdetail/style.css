@@ -109,6 +109,10 @@ body {
   margin-right: 20px;
 }
 
+.check-btn:hover {
+  cursor: pointer;
+}
+
 .check {
   width: 14px;
   height: 14px;
