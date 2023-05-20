@@ -64,10 +64,12 @@
                      th:onclick="|submitForm('get', ${album.albumId}, 'download')|">
                 <img src="/assets/bin.png" alt="휴지통" class="bin"
                      th:onclick="|submitForm('post', ${album.albumId}, 'delete')|">
-                <select name="sort" id="sort">
-                    <option value="byName">이름순 a-z</option>
-                    <option value="byDate">생성날짜순</option>
-                </select>
+                <form th:action="@{/albums/{albumId}(albumId=${album.albumId})}">
+                    <select name="sort" id="sort" onchange="this.form.submit()">
+                        <option value="byName" th:selected="${sort} == 'byName'">이름순 a-z</option>
+                        <option value="byDate" th:selected="${sort} == 'byDate'">생성날짜순</option>
+                    </select>
+                </form>
 
                 <!--이동 박스 ajax로 데이터 보내고 @RequestBody로 받고 ajax success시 다시 location.href를 /albums/albumId로 보내서 화면을 다시 받아와야할 것 같다.-->
                 <div class="move-box" style="display: none;">

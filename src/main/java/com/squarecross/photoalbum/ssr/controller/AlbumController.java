@@ -38,6 +38,7 @@ public class AlbumController {
         model.addAttribute("album", album);
         model.addAttribute("albums", albums);
         model.addAttribute("photos", photos);
+        model.addAttribute("sort", sort);
         model.addAttribute("photoIdsDto", new PhotoIdsDto());
 
         return "albums/albumDetail";
