@@ -1,0 +1,91 @@
+.photo-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px;
+}
+
+.icon-box-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  position: relative;
+}
+
+.move {
+  width: 20px;
+  height: 14px;
+  margin-bottom: 20px;
+}
+
+.move:hover {
+    cursor: pointer;
+}
+
+.download {
+  width: 14px;
+  height: 14px;
+  margin-bottom: 20px;
+}
+
+.download:hover {
+    cursor: pointer;
+}
+
+.bin {
+  width: 14px;
+  height: 16.25px;
+}
+
+.bin:hover {
+    cursor: pointer;
+}
+
+.move-box-col {
+    width: 360px;
+    height: 300px;
+    top: 330px;
+    right: -15px;
+    position: absolute;
+    z-index: 3;
+}
+
+.section2 {
+    width: 40%;
+    height: auto;
+    margin-left: 60px;
+}
+
+.section3 {
+    display: flex;
+    justify-content: center;
+    margin-left: 30px;
+    border-right: 1px solid #bebebe;
+    padding-right: 50px;
+}
+
+.section4 {
+    margin-left: 50px;
+    width: 300px;
+}
+
+.img-info {
+    color: #A44A21;
+    font-family: 'Outfit';
+    font-weight: 500;
+    font-style: normal;
+    font-size: 28px;
+}
+
+.img-info-sentence {
+    color: #ABABAB;
+    font-family: 'Outfit';
+    font-weight: 500;
+    font-style: normal;
+    font-size: 15px;
+}
+
+bottom-line {
+    border-bottom: 1px solid #ABABAB;
+}

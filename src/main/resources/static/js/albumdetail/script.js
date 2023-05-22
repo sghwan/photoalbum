@@ -36,8 +36,6 @@ $move.addEventListener("click", () => {
   }
 });
 
-
-
 function detailClick(albumId, photoId) {
     location.href='/albums/' + albumId +'/photos/' + photoId;
     const $label = document.getElementById("la" + photoId);
@@ -47,6 +45,13 @@ function detailClick(albumId, photoId) {
 }
 
 function submitForm(method, albumId, control) {
+    const photoIds = getCheckedPhotoIds();
+
+    if(photoIds.length == 0) {
+        alert("사진을 선택해 주세요.");
+        return;
+    }
+
     $form.setAttribute("method", method);
     const path = "/albums/" + albumId +"/photos/" + control;
     $form.setAttribute("action", path);

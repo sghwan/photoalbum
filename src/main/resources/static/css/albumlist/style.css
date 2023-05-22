@@ -50,7 +50,7 @@ body {
   margin-right: 60px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .album-col {
@@ -109,7 +109,7 @@ body {
 
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
 }
 
