@@ -48,8 +48,9 @@ public class PhotoController {
     }
 
     @GetMapping("/upload")
-    public String uploadForm() throws IOException {
-        return "photos/uploadForm";
+    public String uploadForm(@PathVariable Long albumId, Model model) throws IOException {
+        model.addAttribute("albumId", albumId);
+        return "photos/photoUpload";
     }
 
     @PostMapping("/upload")

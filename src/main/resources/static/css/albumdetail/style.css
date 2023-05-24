@@ -186,13 +186,18 @@ body {
 
 /*------이미지 클릭시 체크박스 표현을 위한 css------*/
 .photo-title {
+    width: 100px;
   position: absolute;
   padding-left: 5px;
   padding-right: 15px;
   top: 154px;
   color: white;
   background-color: rgba(171, 168, 168, 0.5);
-  font-size: 14px
+  font-size: 14px;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
 }
 
 input[type="checkbox"][id^="cb"] {

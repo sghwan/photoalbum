@@ -6,10 +6,15 @@ spring:
     password: caL356+&*lano
 
   jpa:
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true
+
     hibernate:
       ddl-auto: update
-    generate-ddl: true
-    show-sql: true
+      generate-ddl: true
 
   servlet:
     multipart:

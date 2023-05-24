@@ -45,8 +45,8 @@
 .move-box-col {
     width: 360px;
     height: 300px;
-    top: 330px;
-    right: -15px;
+    right : -15px;
+    top: 15px;
     position: absolute;
     z-index: 3;
 }
@@ -61,13 +61,13 @@
     display: flex;
     justify-content: center;
     margin-left: 30px;
-    border-right: 1px solid #bebebe;
-    padding-right: 50px;
 }
 
 .section4 {
     margin-left: 50px;
-    width: 300px;
+    width: 350px;
+    border-left: 0.5px solid #A0A0A0;
+    padding-left: 30px;
 }
 
 .img-info {
@@ -86,6 +86,6 @@
     font-size: 15px;
 }
 
-bottom-line {
+.bottom-line {
     border-bottom: 1px solid #ABABAB;
 }
