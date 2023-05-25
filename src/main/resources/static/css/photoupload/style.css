@@ -13,14 +13,26 @@
 }
 
 .preview-close-btn {
-    display: block;
-    background-color: black;
-    width: 15px;
-    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    background-image: url("/assets/close-box.png");
+    background-repeat: no-repeat;
 
     position: absolute;
     right: 10px;
     top: 10px;
+}
+
+.preview-close-btn:hover {
+    cursor: pointer;
+}
+
+.x-i {
+    width: 17px;
+    height: 17px;
 }
 
 .empty {
