@@ -59,7 +59,39 @@
                 <div class="check-sentence">전체 선택하기</div>
             </div>
             <div class="icon-box">
-                <img src="/assets/move.png" alt="이동" class="move">
+                <div style="position: relative;">
+                    <img src="/assets/move.png" alt="이동" class="move">
+                    <div class="move-box" style="display: none;">
+                        <div class="polygon"></div>
+                        <div class="sub-move-box">
+                            <div class="create-box-xs">
+                                <div class="create-btn-xs">
+                                    <img class="plus-ratio" src="/assets/plus.png">
+                                </div>
+                                <div class="create-sentence-xs">새 앨범 생성</div>
+                            </div>
+                            <div class="move-list">
+                                <div class="album-xs" th:each="al : ${albums}">
+                                    <div class="photo-box-xs">
+                                        <img class="photo-xs" th:each="thumb : ${al.thumbUrls}"
+                                             th:src="@{/albums/{albumId}/photos/images/{filename}(albumId=${al.albumId}, filename=${thumb})}">
+                                    </div>
+                                    <div class="album-info-xs">
+                                        <div class="album-name-xs" th:text="${al.albumName}">앨범</div>
+                                        <div>
+                                            <div class="album-created-sx"
+                                                 th:text="${#dates.format(al.createdAt, 'yyyy-MM-dd')}"></div>
+                                            <div class="photo-count-xs" th:text="${al.count} + '장'"></div>
+                                        </div>
+                                    </div>
+                                    <div class="move-btn" th:if="${al.albumId} != ${album.albumId}"
+                                         th:onclick="|moveSubmit(${album.albumId}, ${al.albumId})|">파일 이동
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <img src="/assets/download.png" alt="다운로드" class="download"
                      th:onclick="|submitForm('get', ${album.albumId}, 'download')|">
                 <img src="/assets/bin.png" alt="휴지통" class="bin"
@@ -72,36 +104,6 @@
                 </form>
 
                 <!--이동 박스 ajax로 데이터 보내고 @RequestBody로 받고 ajax success시 다시 location.href를 /albums/albumId로 보내서 화면을 다시 받아와야할 것 같다.-->
-                <div class="move-box" style="display: none;">
-                    <div class="polygon"></div>
-                    <div class="sub-move-box">
-                        <div class="create-box-xs">
-                            <div class="create-btn-xs">
-                                <img class="plus-ratio" src="/assets/plus.png">
-                            </div>
-                            <div class="create-sentence-xs">새 앨범 생성</div>
-                        </div>
-                        <div class="move-list">
-                            <div class="album-xs" th:each="al : ${albums}">
-                                <div class="photo-box-xs">
-                                    <img class="photo-xs" th:each="thumb : ${al.thumbUrls}"
-                                         th:src="@{/albums/{albumId}/photos/images/{filename}(albumId=${al.albumId}, filename=${thumb})}">
-                                </div>
-                                <div class="album-info-xs">
-                                    <div class="album-name-xs" th:text="${al.albumName}">앨범</div>
-                                    <div>
-                                        <div class="album-created-sx"
-                                             th:text="${#dates.format(al.createdAt, 'yyyy-MM-dd')}"></div>
-                                        <div class="photo-count-xs" th:text="${al.count} + '장'"></div>
-                                    </div>
-                                </div>
-                                <div class="move-btn" th:if="${al.albumId} != ${album.albumId}"
-                                     th:onclick="|moveSubmit(${album.albumId}, ${al.albumId})|">파일 이동
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="line" style="margin-bottom: 10px;"></div>

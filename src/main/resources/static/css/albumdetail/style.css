@@ -126,8 +126,6 @@ body {
 .icon-box {
   display: flex;
   align-items: center;
-
-  position: relative;
 }
 
 .move {
@@ -298,7 +296,7 @@ label .box {
 
     position: absolute;
     top: 25px;
-    right: 195px;
+    right: -14px;
     z-index: 2;
 }
 
