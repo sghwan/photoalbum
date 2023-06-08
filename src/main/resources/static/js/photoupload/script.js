@@ -35,7 +35,6 @@ function addPreviewImage(ev, arr) {
         reader.readAsDataURL(file);
         reader.onloadend = function () {
             ev.preventDefault()
-            $p.style = 'display: none';
             $img.src = this.result;
             $img.alt = file.name
             $img.classList.add("preview-img");
@@ -70,9 +69,20 @@ function removePreview(ev, f, i) {
 
 function setFiles() {
     const dt = new DataTransfer();
+
     for (let f of fileArr) {
         dt.items.add(f);
     }
-    $fileUpload.style.display = "none";
+
+    if(fileArr.length == 0) {
+        $dropZone.classList.remove("filled");
+        $dropZone.classList.add("empty");
+        $p.style.display = "block";
+        $fileUpload.style.display = "block";
+    } else {
+        $p.style = 'display: none';
+        $fileUpload.style.display = "none";
+    }
+
     $fileUpload.files = dt.files;
 }

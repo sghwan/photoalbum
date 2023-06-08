@@ -58,3 +58,19 @@
     flex-wrap: wrap;
     overflow-y: auto;
 }
+
+.form-basic {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-basic {
+    width: 15%;
+    height: 50px;
+    margin-top: 30px;
+    font-weight: bold;
+    color: white;
+    background-color: #E6864E;
+    border: none;
+}
