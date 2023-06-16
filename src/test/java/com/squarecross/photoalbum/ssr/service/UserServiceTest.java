@@ -1,8 +1,11 @@
 package com.squarecross.photoalbum.ssr.service;
 
 import com.squarecross.photoalbum.domain.User;
+import com.squarecross.photoalbum.dto.EmailDto;
 import com.squarecross.photoalbum.dto.LoginDto;
+import com.squarecross.photoalbum.dto.RegisterDto;
 import com.squarecross.photoalbum.repository.UserRepository;
+import com.squarecross.photoalbum.util.Encrypt;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +42,23 @@ public class UserServiceTest {
 
         //then
         assertThat(loginUser).isEqualTo(user);
+    }
+
+    @Test
+    void register() {
+        //given
+        RegisterDto registerDto = new RegisterDto();
+        registerDto.setEmail("anan123456@naver.com");
+        registerDto.setName("seo");
+        registerDto.setPassword("1234");
+        registerDto.setPasswordCheck("1234");
+
+        //when
+        User register = userService.register(registerDto);
+        String encrypt = new Encrypt().getEncrypt(registerDto.getPassword(), register.getSalt());
+
+        //then
+        assertThat(register.getEmail()).isEqualTo("anan123456@naver.com");
+        assertThat(encrypt).isEqualTo(register.getPassword());
     }
 }

@@ -1,7 +1,9 @@
 package com.squarecross.photoalbum.ssr.service;
 
 import com.squarecross.photoalbum.domain.User;
+import com.squarecross.photoalbum.dto.EmailDto;
 import com.squarecross.photoalbum.dto.LoginDto;
+import com.squarecross.photoalbum.dto.RegisterDto;
 import com.squarecross.photoalbum.repository.UserRepository;
 import com.squarecross.photoalbum.util.Encrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +46,18 @@ public class UserService {
 
     private User findUser(String email) {
         return userRepository.findByEmail(email).orElse(null);
+    }
+
+    public User register(RegisterDto registerDto) {
+        Encrypt encrypt = new Encrypt();
+        String salt = encrypt.genSalt();
+
+        User user = new User();
+        user.setName(registerDto.getName());
+        user.setEmail(registerDto.getEmail());
+        user.setSalt(salt);
+        user.setPassword(encrypt.getEncrypt(registerDto.getPassword(), salt));
+
+        return userRepository.save(user);
     }
 }
