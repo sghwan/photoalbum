@@ -28,4 +28,13 @@ public class Album {
 
     @OneToMany(mappedBy = "album", cascade = CascadeType.ALL)
     private List<Photo> photos = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    private void setUser(User user) {
+        this.user = user;
+        user.getAlbums().add(this);
+    }
 }

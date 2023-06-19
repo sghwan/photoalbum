@@ -6,7 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,4 +33,6 @@ public class User {
     @Column(name = "login_at")
     private Date loginAt;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Album> albums = new ArrayList<>();
 }
