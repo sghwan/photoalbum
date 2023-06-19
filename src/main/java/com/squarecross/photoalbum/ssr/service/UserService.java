@@ -48,9 +48,17 @@ public class UserService {
         return userRepository.findByEmail(email).orElse(null);
     }
 
+    @Transactional
     public User register(RegisterDto registerDto) {
         Encrypt encrypt = new Encrypt();
         String salt = encrypt.genSalt();
+
+        User foundUser = userRepository.findByEmail(registerDto.getEmail())
+                .orElse(null);
+
+        if (foundUser != null) {
+            return null;
+        }
 
         User user = new User();
         user.setName(registerDto.getName());

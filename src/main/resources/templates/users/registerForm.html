@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .error {
+           border-color: red;
+        }
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+<div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh;">
+    <div>
+        <h2 style="color: #a44a21; font-family: 'Outfit'; font-style: normal; font-weight: 400; font-size: 40px; line-height: 50px;">
+            Photo Album</h2>
+    </div>
+    <form th:action="@{/users/register}" method="post" th:object="${register}">
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div style="margin-bottom: 10px;">
+                <input th:field="*{name}" type="text" placeholder="이름"
+                       style="width: 350px; height: 30px; border-radius: 9px;"
+                       th:classappend="${#fields.hasErrors('name')} ? error : _">
+                <p th:if="${#fields.errors('name')}" th:errors="*{name}" class="error"
+                   style="font-size: 10px; margin: 0px; color: red;"></p>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <input th:field="*{email}" type="email" placeholder="이메일"
+                       style="width: 350px; height: 30px; border-radius: 9px;"
+                       th:classappend="${#fields.hasErrors('email') || #fields.hasErrors('global')} ? error : _">
+                <p th:if="${#fields.errors('email')}" th:errors="*{email}" class="error"
+                   style="font-size: 10px; margin: 0px; color: red;"></p>
+                <p th:if="${#fields.hasErrors('global')}" th:each="err : ${#fields.errors('global')}" th:text="${err}"
+                   class="error"
+                   style="font-size: 10px; margin: 0px; color: red;"></p>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <input th:field="*{password}" type="password" placeholder="비밀번호 입력"
+                       style="width: 350px; height: 30px; border-radius: 9px;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <input th:field="*{passwordCheck}" type="password" placeholder="비밀번호 재입력"
+                       style="width: 350px; height: 30px; border-radius: 9px;"
+                       th:classappend="${#fields.hasErrors('passwordCheck')} ? error : _">
+                <p th:if="${#fields.errors('passwordCheck')}" th:errors="*{passwordCheck}" class="error"
+                   style="font-size: 10px; margin: 0px; color: red;"></p>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <button type="submit"
+                        style="width: 355px; height: 35px; border-radius: 9px; background-color: #A44A21; color: white; border: none">
+                    회원가입
+                </button>
+            </div>
+        </div>
+    </form>
+    <div style="margin-bottom: 5px;">
+        <a href="#" style="font-size: 10px; text-decoration:none; color: black;">취소</a>
+    </div>
+</div>
+</body>
+</html>
