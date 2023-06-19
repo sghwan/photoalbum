@@ -33,6 +33,6 @@ public class User {
     @Column(name = "login_at")
     private Date loginAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Album> albums = new ArrayList<>();
 }

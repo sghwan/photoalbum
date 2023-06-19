@@ -2,6 +2,7 @@ package com.squarecross.photoalbum.ssr.service;
 
 import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.Album;
+import com.squarecross.photoalbum.domain.User;
 import com.squarecross.photoalbum.dto.AlbumDto;
 import com.squarecross.photoalbum.mapper.AlbumMapper;
 import com.squarecross.photoalbum.repository.AlbumRepository;
@@ -49,26 +50,27 @@ public class AlbumService {
     }
 
     @Transactional
-    public void createAlbum(String albumName) throws IOException {
+    public void createAlbum(String albumName, User user) throws IOException {
         Album album = new Album();
         album.setName(albumName);
+        album.setUser(user);
         Album savedAlbum = albumRepository.save(album);
         createDirectories(savedAlbum.getId());
     }
 
-    public List<AlbumDto> getAlbums(String keyword, String sort, String orderBy) {
+    public List<AlbumDto> getAlbums(String keyword, String sort, String orderBy, Long userId) {
         List<Album> result = null;
 
         if (sort.equals("byDate")) {
             if (orderBy.equals("desc"))
-                result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtDesc(keyword);
+                result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtDesc(keyword, userId);
             else
-                result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtAsc(keyword);
+                result = albumRepository.findAllByAlbumNameContainingOrderByCreatedAtAsc(keyword, userId);
         } else if (sort.equals("byName")) {
             if (orderBy.equals("desc"))
-                result = albumRepository.findAllByAlbumNameContainingOrderByAlbumNameDesc(keyword);
+                result = albumRepository.findAllByAlbumNameContainingOrderByAlbumNameDesc(keyword, userId);
             else
-                result = albumRepository.findAllByAlbumNameContainingOrderByAlbumNameAsc(keyword);
+                result = albumRepository.findAllByAlbumNameContainingOrderByAlbumNameAsc(keyword, userId);
         } else {
             throw new IllegalArgumentException("알 수 없는 정렬 기준입니다");
         }

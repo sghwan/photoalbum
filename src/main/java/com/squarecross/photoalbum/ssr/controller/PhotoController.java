@@ -1,9 +1,11 @@
 package com.squarecross.photoalbum.ssr.controller;
 
 import com.squarecross.photoalbum.Constants;
+import com.squarecross.photoalbum.domain.User;
 import com.squarecross.photoalbum.dto.*;
 import com.squarecross.photoalbum.ssr.service.AlbumService;
 import com.squarecross.photoalbum.ssr.service.PhotoService;
+import com.sun.net.httpserver.HttpsServer;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -36,9 +39,11 @@ public class PhotoController {
     }
 
     @GetMapping("/{photoId}")
-    public String getPhoto(@PathVariable Long albumId, @PathVariable Long photoId, Model model) {
+    public String getPhoto(@PathVariable Long albumId, @PathVariable Long photoId, Model model, HttpSession session) {
+        User loginUser = (User) session.getAttribute("loginUser");
         PhotoDetailDto photo = photoService.getPhoto(photoId);
-        List<AlbumDto> albums = albumService.getAlbums("", "byDate", "desc");
+        List<AlbumDto> albums = albumService.getAlbums("", "byDate", "desc", loginUser.getId());
+
         model.addAttribute("photo", photo);
         model.addAttribute("albumId", albumId);
         model.addAttribute("albums", albums);

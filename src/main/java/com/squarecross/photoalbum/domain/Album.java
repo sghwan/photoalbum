@@ -32,9 +32,4 @@ public class Album {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    private void setUser(User user) {
-        this.user = user;
-        user.getAlbums().add(this);
-    }
 }

@@ -1,5 +1,6 @@
 package com.squarecross.photoalbum.ssr.controller;
 
+import com.squarecross.photoalbum.Constants;
 import com.squarecross.photoalbum.domain.User;
 import com.squarecross.photoalbum.dto.LoginDto;
 import com.squarecross.photoalbum.dto.RegisterDto;
@@ -7,10 +8,7 @@ import com.squarecross.photoalbum.ssr.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -35,7 +33,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute("login") LoginDto loginDto, BindingResult bindingResult, HttpServletRequest request) {
+    public String login(@ModelAttribute("login") LoginDto loginDto,
+                        BindingResult bindingResult,
+                        HttpServletRequest request) {
+
         User loginUser = userService.login(loginDto);
 
         if (loginUser == null) {
@@ -47,7 +48,7 @@ public class UserController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("loginMember", loginUser);
+        session.setAttribute(Constants.LOGIN_USER, loginUser);
 
         return "redirect:/albums";
     }
