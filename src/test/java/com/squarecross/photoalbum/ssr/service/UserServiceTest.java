@@ -29,16 +29,17 @@ public class UserServiceTest {
         //given
         User user = new User();
         user.setName("seo");
-        user.setEmail("anan123456@naver.com");
+        user.setEmail("anan12345@naver.com");
         user.setPassword("CE370EFA9D66BD305E9DC65A472F6CC77D2266DD7DE93782BD2D63D307C82DBB");
         user.setSalt("abcde");
         userRepository.save(user);
 
         //when
         LoginDto loginDto = new LoginDto();
-        loginDto.setEmail("anan123456@naver.com");
+        loginDto.setEmail("anan12345@naver.com");
         loginDto.setPassword("1234");
         User loginUser = userService.login(loginDto);
+        System.out.println(loginUser);
 
         //then
         assertThat(loginUser).isEqualTo(user);
@@ -48,7 +49,7 @@ public class UserServiceTest {
     void register() {
         //given
         RegisterDto registerDto = new RegisterDto();
-        registerDto.setEmail("anan123456@naver.com");
+        registerDto.setEmail("anan12345@naver.com");
         registerDto.setName("seo");
         registerDto.setPassword("1234");
         registerDto.setPasswordCheck("1234");
@@ -58,7 +59,7 @@ public class UserServiceTest {
         String encrypt = new Encrypt().getEncrypt(registerDto.getPassword(), register.getSalt());
 
         //then
-        assertThat(register.getEmail()).isEqualTo("anan123456@naver.com");
+        assertThat(register.getEmail()).isEqualTo("anan12345@naver.com");
         assertThat(encrypt).isEqualTo(register.getPassword());
     }
 }

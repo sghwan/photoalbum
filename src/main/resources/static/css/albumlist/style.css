@@ -29,8 +29,7 @@ body {
 }
 
 .line {
-  border: 1px solid;
-  color: #bebebe;
+  border: 1px solid #bebebe;
 }
 
 .galleries {
